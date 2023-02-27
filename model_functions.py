@@ -117,7 +117,7 @@ def model_test(device, model, dataloader, loss_func):
     Args:
         device (string): Device to evaluate model on.
         model (model instance): Model to be evaluated.
-        dataloader (DataLoader): Validation dataloader.
+        dataloader (DataLoader): Test dataloader.
         loss_func (function): Loss function.
     """
 
@@ -127,7 +127,7 @@ def model_test(device, model, dataloader, loss_func):
     # turn on inference mode
     with torch.inference_mode():
         # loop through each batch
-        val_loss, val_acc = 0, 0
+        test_loss, test_acc = 0, 0
         for images, classes in dataloader:
             # send data to device
             images, classes = images.to(device), classes.to(device)
@@ -137,13 +137,13 @@ def model_test(device, model, dataloader, loss_func):
 
             # compute loss
             loss = loss_func(y_pred, classes)
-            val_loss += loss
-            val_acc += accuracy_fn(y_true = classes, y_pred = y_pred.argmax(dim=1)
+            test_loss += loss
+            test_acc += accuracy_fn(y_true = classes, y_pred = y_pred.argmax(dim=1)
             )
         
-        val_loss /= len(dataloader)
-        val_acc /= len(dataloader)
-        print(f"Loss: {val_loss:.5f} - Accuracy: {val_acc:.5f}%")
+        test_loss /= len(dataloader)
+        test_acc /= len(dataloader)
+        print(f"Loss: {test_loss:.5f} - Accuracy: {test_acc:.5f}%")
 
 
 
