@@ -64,27 +64,14 @@ class AlexNet(nn.Module):
 
     # xavier initialization
     def init_weights(self):
-        torch.manual_seed(1234)
-        for layer in self.conv_block_1:
-            if isinstance(layer, nn.Conv2d):
-                nn.init.normal_(layer.weight, mean = 0, std = 0.01)
-                nn.init.constant_(layer.bias, 0)
-        for layer in self.conv_block_2:
-            if isinstance(layer, nn.Conv2d):
-                nn.init.normal_(layer.weight, mean = 0, std = 0.01)
-                nn.init.constant_(layer.bias, 0)
-        for layer in self.conv_block_3:
-            if isinstance(layer, nn.Conv2d):
-                nn.init.normal_(layer.weight, mean = 0, std = 0.01)
-                nn.init.constant_(layer.bias, 0)
-        for layer in self.conv_block_4:
-            if isinstance(layer, nn.Conv2d):
-                nn.init.normal_(layer.weight, mean = 0, std = 0.01)
-                nn.init.constant_(layer.bias, 0)
-        for layer in self.conv_block_5:
-            if isinstance(layer, nn.Conv2d):
-                nn.init.normal_(layer.weight, mean = 0, std = 0.01)
-                nn.init.constant_(layer.bias, 0)
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.xavier_uniform_(m.weight)
+                if m.bias is not None:
+                    nn.init.zeros_(m.bias)
+            elif isinstance(m, nn.Linear):
+                nn.init.xavier_uniform_(m.weight)
+                nn.init.zeros_(m.bias)            
 
         nn.init.normal_(self.conv_block_2[0].bias, 1)
         nn.init.normal_(self.conv_block_4[0].bias, 1)
