@@ -72,8 +72,6 @@ def model_train(device, epochs, model, train_dataloader, val_dataloader, loss_fu
 
             total_steps += 1
 
-        # learning rate decay
-        scheduler.step()
 
         # performance on test set
         # turn on inference mode
@@ -95,6 +93,9 @@ def model_train(device, epochs, model, train_dataloader, val_dataloader, loss_fu
             
             total_val_loss /= len(val_dataloader)
             val_acc /= len(val_dataloader)
+
+            # learning rate decay
+            scheduler.step(val_acc)
 
         train_loss /= len(train_dataloader)
         train_acc /= len(train_dataloader)

@@ -10,10 +10,9 @@ import alexnet_model as alex
 DATA_PATH = "alexnet/AlexNet-PyTorch/tiny-imagenet-200"
 BATCH_SIZE = 32
 CLASSES = 200
-LEARNING_RATE = 0.0001
+LEARNING_RATE = 0.01
 MOMENTUM = 0.9
-STEP_SIZE = 20
-GAMMA = 0.1
+FACTOR = 0.1
 EPOCHS = 90
 
 
@@ -47,7 +46,7 @@ if __name__ == "__main__":
 
     cross_entropy = nn.CrossEntropyLoss()
     sgd = torch.optim.SGD(params = alexnet.parameters(), lr = LEARNING_RATE, momentum = MOMENTUM)
-    learning_decay = torch.optim.lr_scheduler.StepLR(optimizer = sgd, step_size = STEP_SIZE, gamma = GAMMA)
+    learning_decay = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer = sgd, mode = "max", factor = FACTOR)
 
 
     # model training
